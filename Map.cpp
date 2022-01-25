@@ -11,25 +11,7 @@ Map::Map()
 
 Map::Map(const Map &cpyFrom)
 {
-
-    m_head = nullptr;
-    KeyType m_keyForCpy;
-    ValueType m_valueForCpy;
-    m_tail = nullptr;
-
-    m_items = 0;
-    int i = 0;
- 
-    while (i < cpyFrom.size())
-    {
-      
-        cpyFrom.get(i, m_keyForCpy, m_valueForCpy);
-        insert(m_keyForCpy, m_valueForCpy);
-        i++;
-    }
-    //add the nodes of anotherMap into current Linked List
- 
-    /*
+    
     // Edge case if the head is a nullptr it is an empty linked list so initalizing it would just be setting head and tail to nullptr and size to 0.
     if (cpyFrom.m_head == nullptr)
     {
@@ -57,7 +39,6 @@ Map::Map(const Map &cpyFrom)
         //Nextpoints previous should now be cpyInto so its next can be the next node in the linked list.
         cpyInto                = nextPoint;
         //cpyInto  set equal to nextPoint because it points to the next element of the linked list.
-        delete nextPoint;
     }
     
     //setting the last node of the linked list
@@ -68,7 +49,6 @@ Map::Map(const Map &cpyFrom)
     cpyInto -> m_next      = nullptr;
     //set the tail equal to the nullptr.
     m_tail                 = cpyInto;
-    */
     
 }
 
