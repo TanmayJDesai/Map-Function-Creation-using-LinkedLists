@@ -40,7 +40,7 @@ int main()
 // from this file and newMap.cpp:
 
  //#define TESTNEW
-
+/*
 #ifdef TESTNEW
 #include "Map.h"
 #else
@@ -762,7 +762,7 @@ int main()
     cout << "all test cases passed" << endl;
 }
 
-
+*/
 /*
 #include "Map.h"
 #include <iostream>
@@ -794,3 +794,70 @@ int main()
    cout << "Passed all tests" << endl;
 }
 */
+
+#include "Map.h"
+#include <iostream>
+#include <cassert>
+using namespace std;
+
+int main()
+{
+    //On all test cases I am using the assumption that KeyType is string and ValueType is double
+    //Map constructor and destructor and insert trials.
+    //Making sure you can construct a map without any arguments.
+    Map Trial1;
+    Map Trial2;
+    const string a = "hi";
+    //Ensures there are no errors when swapping two empty linked lists.
+    Trial1.swap(Trial2);
+    //Testing to make sure the empty function knows the map is empty and prints true when empty.
+    assert(Trial1.empty() == true);
+    //Testing to make sure the size of empty map is 0.
+    assert(Trial1.size() == 0);
+    //Test to ensure you can't take away from an empty map. 
+    assert(!Trial1.erase("Hello"));
+    //Trying normal test cases to ensure they work.
+    assert(Trial1.insert("Tanmay", 18));
+    assert(Trial1.insert("Sejal", 45));
+    assert(Trial1.insert("Jay", 47));
+    assert(Trial1.insert("Jash", 9));
+    //Test case for if a key already exists in map it won't let it add
+    assert(!Trial1.insert("Jash", 19));
+    //Test case for an empty string being passed.
+    assert(Trial1.insert("", 0));
+    //To ensure that a negative double can be passed to map.
+    assert(Trial1.insert("Duncan", -1.2));
+    //To ensure that the size is 6.
+    assert(Trial1.size() == 6);
+    //To ensure that the map is not empty
+    assert(Trial1.empty() == false);
+    //To ensure that the map contains Jash.
+    assert(Trial1.contains("Jash"));
+    //To ensure copy constructor runs without error.
+    Map Trial3(Trial1);
+    //To ensure that copy constructor worked correctly.
+    assert(Trial3.size() == 6);
+    //Ensure that the size transferred over.
+    assert(Trial3.contains("Tanmay"));
+    //Ensured that the nodes transferred over.
+    assert(Trial3.contains("Jay"));
+    //Ensured that the nodes transferred over.
+    assert(Trial3.contains("Sejal"));
+    //Filling out Trial2 Map
+    assert(Trial2.insert("BobTheBuilder", 14));
+    assert(Trial2.insert("GarytheSnail", 99));
+    assert(Trial2.insert("PatrickStar", 78));
+    //Test to make sure the swap function runs without error.
+    Trial1.swap(Trial2);
+    //Test to make sure the sizes have swapped.
+    assert(Trial2.size() == 6);
+    //Test to make sure trial1 doesn't equal its original size.
+    assert(Trial1.size() != 6);
+    //Test to make sure the size equals the new map's size.
+    assert(Trial1.size() == 3);
+    //Test to make sure the actual keys transferred over from 2 to 1.
+    assert(Trial1.contains("BobTheBuilder"));
+    //Test to make sure the actual keys transferred over from 1 to 2.
+    assert(Trial2.contains("Tanmay"));
+    
+}
