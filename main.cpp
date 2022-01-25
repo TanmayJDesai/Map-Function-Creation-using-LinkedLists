@@ -749,9 +749,15 @@ void testone(int n)
 
 int main()
 {
-    for (int i = 1; i < 74; i++)
+    
+    int n;
+    cin >> n;
+    testone(n);
+    cout << "passed" << endl;
+    
+    for (int i = 1; i < 95; i++)
     {
-        if (i != 72)
+        if (i != 72 && i != 74)
         {
             testone (i);
             cout <<"case" << i << endl;
@@ -760,9 +766,10 @@ int main()
      
     }
     cout << "all test cases passed" << endl;
+     
 }
-
 */
+
 /*
 #include "Map.h"
 #include <iostream>
@@ -802,6 +809,7 @@ using namespace std;
 
 int main()
 {
+    
     //On all test cases I am using the assumption that KeyType is string and ValueType is double
     //Map constructor and destructor and insert trials.
     //Making sure you can construct a map without any arguments.
@@ -859,5 +867,252 @@ int main()
     assert(Trial1.contains("BobTheBuilder"));
     //Test to make sure the actual keys transferred over from 1 to 2.
     assert(Trial2.contains("Tanmay"));
+    //Test for the contain function to see if Duncan is in Trial2.
+    assert(Trial2.contains("Duncan"));
+    //Test to make sure the erase function works when not empty linked list.
+    assert(Trial2.erase("Duncan"));
+    //Test to make sure Duncan was actually erased from Trial2.
+    assert(!Trial2.contains("Duncan"));
+    //Test to make sure insert or Update function works.
+    assert(Trial1.insertOrUpdate("BobTheBuilder", 939));
+    //Test to make sure BobTheBuilder was updated to have value 939
+    ValueType v = 939;
+    KeyType k = "Tanmay";
+    assert(Trial1.get("BobTheBuilder", v) && v == 939);
+    //Test to see get works when the key is not in the list.
+    //Also tests to see that the value is left unchanged if no key in list.
+    assert(!Trial1.get("MarioBrothers", v) && v == 939);
+    //Test to see make sure the value is set to the correct value.
+    assert(Trial1.get("GarytheSnail", v) && v == 99);
+    //Test to see the swap ran without error.
+    Trial2.swap(Trial3);
+    //Test to make sure the sizes fliped.
+    assert(Trial3.size() == 5);
+    //Test to make sure trial2 got the size of trial3.
+    assert(Trial2.size() == 6);
+    //Test to make sure the values switched.
+    assert(!Trial3.contains("Duncan"));
+    //Test to make sure the values switched the other way around.
+    assert(Trial2.contains("Duncan"));
+    //Test to make sure the values switched.
+    assert(Trial3.get(0, k, v) && k == "" && v == 0);
+    //Test to make sure the linked list got sorted through the get function.
+    assert(Trial3.get(1, k, v) && k == "Jash" && v == 9);
+    //Test to make sure the linked list got sorted through the get function.
+    assert(Trial3.get(2, k, v) && k == "Jay" && v == 47);
+    //Test to make sure the linked list got sorted through the get function.
+    assert(Trial3.get(3, k, v) && k == "Sejal" && v == 45);
+    //Test to make sure the linked list got sorted through the get function.
+    assert(Trial3.get(4, k, v) && k == "Tanmay" && v == 18);
+    //Test to make sure you the get function cant access anything not in the linked list.
+    //Test also makes sure k and v are unchanged from previous get.
+    assert(!Trial3.get(5, k, v) && k == "Tanmay" && v == 18);
+    
+    
+    //Test setting up for the merge and reassign functions.
+    Map m1;
+    m1.insert("Tanmay", 18);
+    m1.insert("Josh", 19);
+    m1.insert("Suraj", 20);
+    m1.insert("Kulveer", 21);
+    m1.insert("Sahil", 22);
+    
+    Map m2;
+    m2.insert("Snehesh", 23);
+    m2.insert("Brudda", 24);
+    m2.insert("Tanmay", 18);
+    m2.insert("Josh", 19);
+    m2.insert("Suraj", 32);
+    
+    Map result;
+    result.insert("Hi", 2);
+    result.insert("Heyo", 3);
+    result.insert("Boyah", 4);
+
+    
+    merge(m1, m2, result);
+    //Test to see whether the merge worked and now contains the keys
+    //Will check for values later.
+    assert(result.contains("Tanmay"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Josh"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Kulveer"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Sahil"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Snehesh"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Brudda"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(!result.contains("Suraj"));
+    //Test to see whether the merge worked and now contains the keys
+
+    //Test to see whether the merge worked and the correct values were copied.
+    
+    KeyType key = "Bunny";
+    ValueType val = 172;
+    
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(0, key, val) && key == "Brudda" && val == 24);
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(1, key, val) && key == "Josh" && val == 19);
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(2, key, val) && key == "Kulveer" && val == 21);
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(3, key, val) && key == "Sahil" && val == 22);
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(4, key, val) && key == "Snehesh" && val == 23);
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(5, key, val) && key == "Tanmay" && val == 18);
+    //Test to make sure the size is six and not 7 (Suraj didnt get copied over).
+    assert(result.size() == 6);
+    //Test to make sure the result map is not empty.
+    assert(!result.empty());
+    
+    //Test for the reassign function.
+     
+    //Test setting up one map and a result map.
+    Map m3;
+    Map result1;
+    m3.insert("Tanmay", 18);
+    m3.insert("Josh", 19);
+    m3.insert("Suraj", 20);
+    m3.insert("Kulveer", 21);
+    m3.insert("Sahil", 22);
+    m3.insert("Snehesh", 23);
+    
+    result1.insert("Hi", 3);
+    result1.insert("Heyo", 44);
+    reassign(m3, result1);
+    
+    KeyType key1;
+    ValueType val1;
+
+    assert(result.contains("Tanmay"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(!result.contains("Suraj"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Kulveer"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Sahil"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Snehesh"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Josh"));
+    //Test to make sure that tanmay with spaces after is not the same as tanmay.
+    assert(!result.contains("Tanmay   "));
+
+    //Test to make sure result is not empty.
+    assert(!result1.empty());
+    //Test to make sure result has the correct size.
+    assert(result1.size() == 6);
+    //Test to make sure not only correct keys but also values are correct.
+    assert(result1.get(0, key1, val1) && key1 == "Josh" && val1 == 21);
+    //Test to make sure not only correct keys but also values are correct.
+    assert(result1.get(1, key1, val1) && key1 == "Kulveer" && val1 == 22);
+    //Test to make sure not only correct keys but also values are correct.
+    assert(result1.get(2, key1, val1) && key1 == "Sahil" && val1 == 23);
+    //Test to make sure not only correct keys but also values are correct.
+    assert(result1.get(3, key1, val1) && key1 == "Snehesh" && val1 == 20);
+    //Test to make sure not only correct keys but also values are correct.
+    assert(result1.get(4, key1, val1) && key1 == "Suraj" && val1 == 18);
+    //Test to make sure not only correct keys but also values are correct.
+    assert(result1.get(5, key1, val1) && key1 == "Tanmay" && val1 == 19);
+    //Test to make sure not only correct keys but also values are correct.
     
 }
+
+/*
+#include "Map.h"
+#include <iostream>
+#include <cassert>
+using namespace std;
+
+int main()
+{
+    Map m3;
+    Map result1;
+    assert(m3.insert("Tanmay", 18));
+    assert(m3.insert("Josh", 19));
+    assert(m3.insert("Suraj", 20));
+    assert(m3.insert("Kulveer", 21));
+    assert(m3.insert("Sahil", 22));
+    assert(m3.insert("Snehesh", 23));
+    
+    reassign(m3, result1);
+    KeyType key1;
+    ValueType val1;
+    for (int i = 0; i < 6; i++)
+    {
+        result1.get(i, key1, val1);
+        cout << key1 << " --> " << val1 << endl;
+    }
+}
+*/
+/*
+#include "Map.h"
+#include <iostream>
+#include <cassert>
+using namespace std;
+int main()
+{
+    Map m1;
+    m1.insert("Tanmay", 18);
+    m1.insert("Josh", 19);
+    m1.insert("Suraj", 20);
+    m1.insert("Kulveer", 21);
+    m1.insert("Sahil", 22);
+    
+    Map m2;
+    m2.insert("Snehesh", 23);
+    m2.insert("Brudda", 24);
+    m2.insert("Tanmay", 18);
+    m2.insert("Josh", 19);
+    m2.insert("Suraj", 32);
+    
+    Map result;
+    result.insert("Hi", 2);
+    
+    merge(m1, m2, result);
+    //Test to see whether the merge worked and now contains the keys
+    //Will check for values later.
+    assert(result.contains("Tanmay"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Josh"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Kulveer"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Sahil"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Snehesh"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(result.contains("Brudda"));
+    //Test to see whether the merge worked and now contains the keys
+    assert(!result.contains("Suraj"));
+    //Test to see whether the merge worked and now contains the keys
+
+    //Test to see whether the merge worked and the correct values were copied.
+    
+    KeyType key = "Bunny";
+    ValueType val = 172;
+    
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(0, key, val) && key == "Brudda" && val == 24);
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(1, key, val) && key == "Josh" && val == 19);
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(2, key, val) && key == "Kulveer" && val == 21);
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(3, key, val) && key == "Sahil" && val == 22);
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(4, key, val) && key == "Snehesh" && val == 23);
+    //Test to make sure that only the correct values are in result.
+    assert(result.get(5, key, val) && key == "Tanmay" && val == 18);
+    //Test to make sure the size is six and not 7 (Suraj didnt get copied over).
+    assert(result.size() == 6);
+    //Test to make sure the result map is not empty.
+    assert(!result.empty());
+    
+}
+*/
