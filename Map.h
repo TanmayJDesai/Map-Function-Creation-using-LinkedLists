@@ -28,7 +28,7 @@ class Map
         void swap(Map& other);
     private:
     
-    //Created circular doubly-linked list as the private member of the map function:
+    //Created doubly-linked list as the private member of the map function:
     //Class Invariants:
     //If empty both m_next and m_prev have to be nulllptr;
     //If the pointers of m_next and m_prev are nullptrs the code must not follow them
