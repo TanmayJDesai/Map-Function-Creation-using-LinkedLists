@@ -21,6 +21,7 @@ void test()
     assert(m.get(1, x2, v)  &&
            ((x2 == "Fred"  &&  v == 123)  ||  (x2 == "Ethel"  &&  v == 456))  &&
            x != x2);
+     
 }
 
 int main()
@@ -28,9 +29,9 @@ int main()
     test();
     cout << "Passed all tests" << endl;
 }
+
+
 */
-
-
 // There are 74 test cases for problem 3 of Homework 1.  Build an executable
 // from this file and Map.cpp
 
@@ -38,10 +39,10 @@ int main()
 // To test problem 5, uncomment the following line and build an executable
 // from this file and newMap.cpp:
 
-//#define TESTNEW
+ //#define TESTNEW
 
 #ifdef TESTNEW
-#include "newMap.h"
+#include "Map.h"
 #else
 #include "Map.h"
 #endif
@@ -387,7 +388,7 @@ void testone(int n)
         ValueType v = DUMMYV;
         m.get(0, k, v);
         assert(k == ARRAY[0]);
-           } break; case 60: {
+            } break; case 60: {
         m.insert(ARRAY[1], ARRAYV[1]);
         m.insert(ARRAY[0], ARRAYV[0]);
         KeyType k0 = DUMMY;
@@ -499,12 +500,12 @@ void testone(int n)
         assert(m.insert(k, DUMMYV));
         k += 'x';
         }
-       // assert(!m.insert(k, DUMMYV)  &&  m.size() == SPEC_MAX  &&  !m.contains(k));
+        assert(!m.insert(k, DUMMYV)  &&  m.size() == SPEC_MAX  &&  !m.contains(k));
             } break; case 73: {
         assert(m.insert(DUMMY, DUMMYV));
         for (int n = 0; n < 10*SPEC_MAX; n++)
         assert(m.insertOrUpdate(DUMMY, DUMMYV));
-       // assert(m.size() == 1);
+        assert(m.size() == 1);
             } break; case 74: {
         KeyType k;
         KeyType kfirst;
@@ -748,22 +749,48 @@ void testone(int n)
 
 int main()
 {
-  
     for (int i = 1; i < 74; i++)
     {
-        if (i != 72 )
+        if (i != 72)
         {
-            testone(i);
-            cout << "test # " << i << endl;
-            cout << "passed" <<endl;
+            testone (i);
+            cout <<"case" << i << endl;
+            cout <<"passed" <<endl;
         }
+     
     }
-    cout << "Passed all Tests" << endl;
-    /*
-    cout << "Enter test number: ";
-    int n;
-    cin >> n;
-    testone(n);
-    cout << "Passed" << endl;
-    */
+    cout << "all test cases passed" << endl;
 }
+
+
+/*
+#include "Map.h"
+#include <iostream>
+#include <cassert>
+using namespace std;
+
+void test()
+{
+   Map m;
+   assert(m.insert(10, "diez"));
+   assert(m.insert(20, "veinte"));
+   assert(m.size() == 2);
+   ValueType v = "cuarenta y dos";
+   assert(!m.get(30, v)  &&  v == "cuarenta y dos");
+   assert(m.get(10, v)  &&  v == "diez");
+   v = "cuarenta y dos";
+   KeyType x = 30;
+   assert(m.get(0, x, v)  &&
+          ((x == 10  &&  v == "diez")  ||  (x == 20  &&  v == "veinte")));
+   KeyType x2 = 40;
+   assert(m.get(1, x2, v)  &&
+          ((x2 == 10  &&  v == "diez")  ||  (x2 == 20  &&  v == "veinte"))  &&
+          x != x2);
+}
+
+int main()
+{
+   test();
+   cout << "Passed all tests" << endl;
+}
+*/
