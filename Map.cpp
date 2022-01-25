@@ -10,6 +10,7 @@ Map::Map()
 }
 
 Map::Map(const Map &cpyFrom)
+: m_items(cpyFrom.m_items)
 {
     
     // Edge case if the head is a nullptr it is an empty linked list so initalizing it would just be setting head and tail to nullptr and size to 0.
@@ -376,6 +377,7 @@ void Map::swap(Map& other)
     int swapItems   = m_items;
     Node * swapHead = m_head;
     Node * swapTail = m_tail;
+
     
     m_head       = other.m_head;
     other.m_head = swapHead;
@@ -390,20 +392,20 @@ void Map::swap(Map& other)
 
 bool merge(const Map& m1, const Map& m2, Map& result)
 {
-    int i = 0;
     int j = 0;
     int k = 0;
+    
+    KeyType m1FirstKey; ValueType m1FirstValue;
+    ValueType checkForSame;
+    KeyType m2FirstKey; ValueType m2FirstValue;
+
     bool hasSameOrDifferentValues = true;
-    while (i != result.size())
-    {
-        KeyType resultKey; ValueType resultValue;
-        result.get(0, resultKey, resultValue);
-        result.erase(resultKey);
-        i++;
-    }
+    
+    Map emptyMap;
+    result.swap(emptyMap);
+    
     while (j != m1.size())
     {
-        KeyType m1FirstKey; ValueType m1FirstValue;
         m1.get(j, m1FirstKey, m1FirstValue);
         if (!m2.contains(m1FirstKey))
         {
@@ -411,7 +413,6 @@ bool merge(const Map& m1, const Map& m2, Map& result)
         }
         else if (m2.contains(m1FirstKey))
         {
-            ValueType checkForSame;
             m2.get(m1FirstKey, checkForSame);
             if (m1FirstValue == checkForSame)
             {
@@ -424,9 +425,9 @@ bool merge(const Map& m1, const Map& m2, Map& result)
         }
         j++;
     }
+    
     while (k != m2.size())
     {
-        KeyType m2FirstKey; ValueType m2FirstValue;
         m2.get(k, m2FirstKey, m2FirstValue);
         if (!m1.contains(m2FirstKey))
         {
@@ -434,36 +435,43 @@ bool merge(const Map& m1, const Map& m2, Map& result)
         }
         k++;
     }
+    
     return hasSameOrDifferentValues;
 }
 
 void reassign(const Map& m, Map& result)
 {
-    int i = 0;
-    int j = 0;
-    KeyType mKey; ValueType mValue;
-    m.get(0, mKey, mValue);
     
-    while (i != result.size())
+    int j = 0;
+    
+    KeyType keyB; ValueType valB;
+    KeyType keyC; ValueType valC;
+    KeyType keyD; ValueType valD;
+    
+    Map createEmptyMap;
+    result.swap(createEmptyMap);
+    
+    int sizeOrig = m.size();
+
+    if (sizeOrig == 1 || sizeOrig == 0)
     {
-        KeyType resultKey; ValueType resultValue;
-        result.get(0, resultKey, resultValue);
-        result.erase(resultKey);
-        i++;
+        result = m;
     }
-    while (j != m.size())
+    
+    m.get(0, keyB, valB);
+
+    while (j != sizeOrig)
     {
-        ValueType mValue1; KeyType mKey1;
-        m.get(i, mKey1, mValue1);
-        if (i+1 != m.size())
+        m.get(j, keyC, valC);
+        if (j+1 == sizeOrig)
         {
-            KeyType mKey2; ValueType mValue2;
-            m.get(i+1, mKey2, mValue2);
-            result.insertOrUpdate(mKey1, mValue2);
+            result.insertOrUpdate(keyC, valB);
         }
-        else if (i+1 == m.size())
+        else
         {
-            result.insertOrUpdate(mKey1, mValue);
+            m.get(j+1, keyD, valD);
+            result.insertOrUpdate(keyC, valD);
         }
+        j++;
     }
 }
