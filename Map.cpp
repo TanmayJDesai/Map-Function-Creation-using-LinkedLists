@@ -1,5 +1,6 @@
 #include "Map.h"
 
+//Normal Constructor
 Map::Map()
 {
     //Not a circular doublylinked list so didn't use a dummy node;
@@ -8,49 +9,65 @@ Map::Map()
     m_items = 0;       // set the size of the linked list to 0;
     // Create an empty map (i.e., one with no key/value pairs)
 }
-
+//Copy Constructor
 Map::Map(const Map &cpyFrom)
 : m_items(cpyFrom.m_items)
+//set the items equal to the items in the linked list that you are copying from.
 {
-    
-    // Edge case if the head is a nullptr it is an empty linked list so initalizing it would just be setting head and tail to nullptr and size to 0.
-    if (cpyFrom.m_head == nullptr)
+    //If the size is 0 which means the linked list is empty
+    //Then enter this statement
+    if (cpyFrom.size() == 0)
     {
-        m_head  = nullptr;
-        m_tail  = nullptr;
-        m_items = 0;
+        //Because we have an empty list we just do the same thing we
+        //do in the normal constructor. Except, we don't set size
+        //because that was already done.
+        m_head = nullptr;
+        //set the head to a nullptr.
+        m_tail = nullptr;
+        //set the tail to a nullptr.
     }
-    //Otherwise its not empty so creating a new node and seting it to m_head and then setting the previous to the nullptr.
-    m_head               = new Node;
-    m_head -> m_prev     = nullptr;
-    Node * cpyInto = m_head;
-    //Created a temp variable and set the pointer to the m_head which points to the new node.
-    for (Node * point = cpyFrom.m_head; point -> m_next != nullptr; point = point -> m_next)
+    //If the size is not 0 and thus the linked list is not empty:
+    else
     {
-        //Loop through the linked list past in the parameter and copy over that node into the one that we make.
-        Node * nextPoint       = new Node;
-        //Create a pointer to the node that we are "updating (it basically points to the node that we are storing the value in so that we can set that equal to the m_next of cpyInto.
-        cpyInto -> m_keyType   = point -> m_keyType;
-        //copy the key from the point to the cpyInto
-        cpyInto -> m_valueType = point -> m_valueType;
-        //Copy the value from the point to the cpyInto.
-        cpyInto -> m_next      = nextPoint;
-        //When we saved the nextpoint pointer equal to the new node set the cpyInto's next pointer to the that pointer.
-        nextPoint -> m_prev    = cpyInto;
-        //Nextpoints previous should now be cpyInto so its next can be the next node in the linked list.
-        cpyInto                = nextPoint;
-        //cpyInto  set equal to nextPoint because it points to the next element of the linked list.
+        //create a new node and set the m_head to point to it
+        m_head = new Node;
+        //Then the m_head's previous is a nullptr because not a circular doubly linked list.
+        m_head -> m_prev = nullptr;
+        //Create two pointers: Set one equal to the head pointer and the other equal to the linked list
+        //being passed in the parameter that we are copying from.
+        Node * alpha = m_head;
+        Node * point = cpyFrom.m_head;
+        //Enter the while loop until the point's next is equal to the nullptr because
+        //that is when the linked list is empty.
+        //Go until the next isn't a nullptr so we can add the last node manually after the loop.
+        //We add this manually because we want to set the tail equal to that last node and we would have tail point to different nodes if we put it in the while loop.
+        while (point -> m_next != nullptr)
+        {
+            //create a pointer and set it to a new node.
+            Node * pointerNew = new Node;
+            //set the key and values from the old to the new node.
+            alpha -> m_keyType = point -> m_keyType;
+            alpha -> m_valueType = point -> m_valueType;
+            //Set the alpha to the next node so the pointer carries over.
+            alpha -> m_next = pointerNew;
+            //set the pointer that points to the current node set its prev to alpha so one points
+            //to the previous node and the other points to the current node.
+            pointerNew -> m_prev = alpha;
+            //Set the alpha to the pointerNew so it then points to the new
+            alpha = pointerNew;
+            //Set the original pointer that pointed to the linked list passed in by the parameter
+            //to its next so we know the next thing it opints to...we save that.
+            point = point -> m_next;
+        }
+        //Once it exits you know the next of that would be the nullptr so we want to set the last nodes
+        //key and value pairs and then set the next of the alpha to a nullptr so that we know the tail
+        //would complete the doubly linked list.
+        alpha -> m_keyType = cpyFrom.m_tail -> m_keyType;
+        alpha -> m_valueType = cpyFrom.m_tail ->m_valueType;
+        
+        alpha -> m_next = nullptr;
+        m_tail = alpha;
     }
-    
-    //setting the last node of the linked list
-    cpyInto -> m_keyType   = cpyFrom.m_tail -> m_keyType;
-    //Last node of linked list, its key = cpyFrom (parameter Map)'s key.
-    cpyInto -> m_valueType = cpyFrom.m_tail -> m_valueType;
-    //Last node of linked list, its value = cpyFrom (parameter Map)'s value.
-    cpyInto -> m_next      = nullptr;
-    //set the tail equal to the nullptr.
-    m_tail                 = cpyInto;
-    
 }
 
 Map & Map::operator = (const Map & cpyFrom)
@@ -71,7 +88,6 @@ Map::~Map()
     //Destructor
     if (m_head == nullptr)
     {
-
         //If the head is a nullptr the linked list is empty so return.
         return;
     }
@@ -89,10 +105,12 @@ Map::~Map()
 bool Map::empty() const
 {
     bool emptyOrNot = false;
+    //If m_items is 0 then you know its empty so return true saying its empty
     if (m_items == 0)
     {
         emptyOrNot = true;
     }
+    //if mitems not 0 it has a value so return false;
     return emptyOrNot;
     // Return true if the map is empty, otherwise false.
 }
@@ -106,27 +124,39 @@ int Map::size() const
 bool Map::insert(const KeyType& key, const ValueType& value)
 {
     bool isTrue = true;
+    //Create a bool isTrue and store that as true;
+    //Check to see if the key already exists in the map
     if (contains(key))
     {
         return false;
     }
+    //If it does return false otherwise add the node (key and value) to the map.
     else
     {
+        //Create a pointer newguy and set that to a new node.
         Node * new_Guy         = new Node;
+        //set the key value pairs.
         new_Guy -> m_keyType   = key;
         new_Guy -> m_valueType = value;
+        
+        //set the next to a nullptr Because we are adding to the end so last node would contain nullptr.
         new_Guy -> m_next      = nullptr;
+        //set the previous to the tail
         new_Guy -> m_prev      = m_tail;
         if (empty())
         {
+            //if its empty set the head and tail both to newGuy cause newGuy would be the last one.
             m_head = new_Guy;
             m_tail = new_Guy;
+            //increment items in map
             m_items++;
         }
         else if (!empty())
         {
+            //otherwise set the tail's next to new guy then set tail to newguy so you are pointing to
             m_tail -> m_next = new_Guy;
             m_tail           = new_Guy;
+            //increment 
             m_items++;
 
         }
