@@ -156,11 +156,11 @@ bool Map::insert(const KeyType& key, const ValueType& value)
             //otherwise set the tail's next to new guy then set tail to newguy so you are pointing to
             m_tail -> m_next = new_Guy;
             m_tail           = new_Guy;
-            //increment 
+            //increment items in map
             m_items++;
 
         }
-
+        //set bool to true and return it.
         isTrue = true;
     }
     
@@ -176,11 +176,15 @@ bool Map::insert(const KeyType& key, const ValueType& value)
 
 bool Map::update(const KeyType& key, const ValueType& value)
 {
+    //check to see if the key already exists in the map.
     for (Node * point = m_head; point != nullptr; point = point -> m_next)
     {
+        //if it exists set the value for that key equal to
+        //the key provided in the parameter.
         if (point -> m_keyType == key)
         {
             point -> m_valueType = value;
+            //return true if you could update otherwise false
             return true;
         }
     }
@@ -196,6 +200,9 @@ bool Map::insertOrUpdate(const KeyType& key, const ValueType& value)
 {
     if (update(key, value) == true)
     {
+        //Used the insert and update functions already created.
+        //if you could update it do that and return true otherwise try to insert
+        //and return whatever the result of that is.
         return true;
     }
     return (insert(key, value));
@@ -212,14 +219,25 @@ bool Map::insertOrUpdate(const KeyType& key, const ValueType& value)
 
 bool Map::erase(const KeyType& key)
 {
+    //If the map doesn't contain key return false because
+    //you can't delete something that isn't there.
     if (!contains(key))
     {
         return false;
     }
-    
+    //create a pointer and bool isTrue.
     Node * point;
     bool isTrue = true;
+    //there are 3 main conditions we want to check
+    //1. when heads keytype is the key and its the only node in the list.
+    //2. when the tails key is the key in the parameter
+    //3. when the head's key is the key in the parameter and its not the only node.
+    //don't need to check for tail and only 1 because that would be covered in 1st case.
     
+    //If it is head and only 1 element
+    //delete the m_head
+    //and set tail and head to nullptr
+    //decrement or we could set to 0 manually but following same convention for all cases.
     if (m_head -> m_keyType == key && size() == 1)
     {
         delete m_head;
@@ -228,7 +246,10 @@ bool Map::erase(const KeyType& key)
         m_items--;
         return isTrue;
     }
-    
+    //if tail
+    //use the pointer we created beforehand and set that to the tail .
+    //set the tails, previous, next so the tail itself to the pointers next.
+    //delete the pointer and then decrement
     if (m_tail -> m_keyType == key)
     {
         point = m_tail;
@@ -238,7 +259,10 @@ bool Map::erase(const KeyType& key)
         m_items --;
         return isTrue;
     }
- 
+    //if head and not 1
+    //set the point that we had established to m_head
+    //set the m_head to the pointer's previous
+    //delete the pointer and decrement items.
     if (m_head -> m_keyType == key)
     {
         point = m_head;
@@ -250,7 +274,8 @@ bool Map::erase(const KeyType& key)
     }
     
     Node * newPoint;
-    
+    //Created a new pointer and looped through the linked list until I found the
+    //point where the pointer's next isn't a nullptr and its next's key is the key in the parameter.
     for ( newPoint = m_head; newPoint != nullptr ; newPoint = newPoint -> m_next)
     {
         if (newPoint -> m_next != nullptr && newPoint -> m_next ->m_keyType == key)
@@ -258,7 +283,12 @@ bool Map::erase(const KeyType& key)
             break;
         }
     }
-    
+    //because you break the loop when you either meet the req or its a nullptr check for the nullptr.
+    //if its a nullptr enter the statement
+    //set the pointer = the newpointers next.
+    //Then set that same newpointers next equal to the points next.
+    //Set the actual point to its next (basically increment the pointer.
+    //delete the pointer and decrement the items
     if (newPoint != nullptr)
     {
         point = newPoint -> m_next;
@@ -285,6 +315,7 @@ bool Map::contains(const KeyType& key) const
     {
         if (point -> m_keyType == key)
         {
+            //Basically loop through the linked list and if the key of the point equals to the key return true otherwise false.
             return true;
         }
     }
@@ -296,6 +327,8 @@ bool Map::get(const KeyType& key, ValueType& value) const
 {
     for (Node * point = m_head; point != nullptr; point = point -> m_next)
     {
+        //Loop through the linked list and find when the pointer's key is the key
+        //from the parameter. then set the value to that pointer's value.
         if (point -> m_keyType == key)
         {
             value = point -> m_valueType;
@@ -313,22 +346,29 @@ bool Map::get(int i, KeyType& key, ValueType& value) const
 {
     //Basically just did what I did in HW but changed the loops so they incremeneted the pointer.
     Node * firstPoint = m_head;
+    //Deal with the edge case first
+    //if i < 0 and >= items return false.
     if (i < 0  ||  i >= m_items)
     {
         return false;
     }
+    //while the pointer we declared isn't the nullptr
     while (firstPoint != nullptr)
     {
         int numGreaterThanI = 0;
+        //set a count
         Node * secondPoint = m_head;
         while (secondPoint != nullptr)
         {
+            //Everytime one is greater than the other increment count.
             if (firstPoint -> m_keyType > secondPoint -> m_keyType)
             {
                 numGreaterThanI ++;
             }
             secondPoint = secondPoint -> m_next;
         }
+        //if the count is equal to i set the key = the key associated with the pointer
+        //set the value = the value associated with the pointer.
         if (numGreaterThanI == i)
         {
             key = firstPoint -> m_keyType;
@@ -336,6 +376,7 @@ bool Map::get(int i, KeyType& key, ValueType& value) const
             return true;
         }
         firstPoint = firstPoint -> m_next;
+        //increment the pointer one more time.
     }
 
     // If 0 <= i < size(), copy into the key and value parameters the
@@ -407,16 +448,19 @@ void Map::swap(Map& other)
     int swapItems   = m_items;
     Node * swapHead = m_head;
     Node * swapTail = m_tail;
-
+    //create a temporary head, int, and tail.
     
     m_head       = other.m_head;
     other.m_head = swapHead;
+    //swap head pointers.
     
     m_tail       = other.m_tail;
     other.m_tail = swapTail;
+    //swap tail pointers.
     
     m_items       = other.m_items;
     other.m_items = swapItems;
+    //swap the number of items each map contains.
     // Exchange the contents of this map with the other one.
 }
 
@@ -428,28 +472,32 @@ bool merge(const Map& m1, const Map& m2, Map& result)
     KeyType m1FirstKey; ValueType m1FirstValue;
     ValueType checkForSame;
     KeyType m2FirstKey; ValueType m2FirstValue;
-
+    //declare multiple keytypes and value types for different get functions.
     bool hasSameOrDifferentValues = true;
     
     Map emptyMap;
     result.swap(emptyMap);
-    
+    //create and empty map and swap with the result incase result is not empty.
     while (j != m1.size())
     {
         m1.get(j, m1FirstKey, m1FirstValue);
         if (!m2.contains(m1FirstKey))
         {
             result.insertOrUpdate(m1FirstKey, m1FirstValue);
+            //in the loop when it doesn't contain the key insert it.
         }
         else if (m2.contains(m1FirstKey))
         {
             m2.get(m1FirstKey, checkForSame);
             if (m1FirstValue == checkForSame)
             {
+                //if it contains the key and the value from the first get and the value from this get are the same
+                //insert the first key and first value.
                 result.insertOrUpdate(m1FirstKey, m1FirstValue);
             }
             else
             {
+                //otherwise set the bool variable to false and increment the loop.
                 hasSameOrDifferentValues = false;
             }
         }
@@ -458,6 +506,7 @@ bool merge(const Map& m1, const Map& m2, Map& result)
     
     while (k != m2.size())
     {
+        //while it doesn't equal the size loop through and see if it doesn't contain the key and then insert it.
         m2.get(k, m2FirstKey, m2FirstValue);
         if (!m1.contains(m2FirstKey))
         {
@@ -478,18 +527,22 @@ void reassign(const Map& m, Map& result)
     KeyType keyC; ValueType valC;
     KeyType keyD; ValueType valD;
     
+    //Create three keytype and valuetype for the three gets.
+    
     Map createEmptyMap;
     result.swap(createEmptyMap);
-    
+    //Basically if the map is not empty then swap it with an empty map
     int sizeOrig = m.size();
-
+    //if the size is 1 or empty then have the result just be the m map.
     if (sizeOrig == 1 || sizeOrig == 0)
     {
         result = m;
     }
     
     m.get(0, keyB, valB);
-
+    //in the loop see if the j + 1 = the size of the map m
+    //if it is insert that in result
+    //otherwise get the value at j+1 and insert that. 
     while (j != sizeOrig)
     {
         m.get(j, keyC, valC);
