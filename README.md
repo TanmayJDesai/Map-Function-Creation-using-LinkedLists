@@ -1,15 +1,4 @@
-# CS32_Project2_Backup
 Creating a Map using linked lists
-Winter 2022 CS 32
-Programming Assignment 2
-Double Exposure
-Link Link
-Time due: 11:00 PM Tuesday, January 25
-
-Homework 1 gave you extensive experience with the Map type using both arrays and dynamically-allocated arrays. In this project, you will re-write the implementation of the Map type to employ a doubly-linked list rather than an array. You must not use arrays. You will also implement a couple of algorithms that operate on maps.
-
-Implement Map yet again
-Consider the Map interface from problem 2 of Homework 1:
 
 using KeyType = TheTypeOfTheKeysGoesHere;
 using ValueType = TheTypeOfTheValuesGoesHere;
@@ -29,9 +18,9 @@ class Map
     bool get(int i, KeyType& key, ValueType& value) const;
     void swap(Map& other);
 };
-In problem 3 of Homework 1, you implemented this interface using an array. For this project, implement this Map interface using a doubly-linked list. (You must not use the list class template from the C++ library.)
+For this project, implement this Map interface using a doubly-linked list. (You must not use the list class template from the C++ library.)
 
-For the array implementation of problem 3 of Homework 1, since you declared no destructor, copy constructor, or assignment operator, the compiler wrote them for you, and they did the right thing. For this linked list implementation, if you let the compiler write the destructor, copy constructor, and assignment operator, they will do the wrong thing, so you will have to declare and implement these public member functions as well:
+For this linked list implementation, if you let the compiler write the destructor, copy constructor, and assignment operator, they will do the wrong thing, so you will have to declare and implement these public member functions as well:
 
 Destructor
 When a Map is destroyed, the nodes in the linked list must be deallocated.
@@ -39,7 +28,7 @@ Copy constructor
 When a brand new Map is created as a copy of an existing Map, enough new nodes must be allocated to hold a duplicate of the original list.
 Assignment operator
 When an existing Map (the left-hand side) is assigned the value of another Map (the right-hand side), the result must be that the left-hand side object is a duplicate of the right-hand side object, with no memory leak of list nodes (i.e. no list node from the old value of the left-hand side should be still allocated yet inaccessible).
-Notice that there is now no a priori limit on the maximum number of key/value pairs in the Map (so insertOrUpdate should always return true). Notice also that, as in Homework 1, if a Map has a size of n, then the values of the first parameter to the three-parameter form of get for which that function retrieves a key and a value (that were previously inserted by a call to insert) and returns true are 0, 1, 2, …, n−1; for other values, it returns false without setting its second and third parameters. This is the same visible behavior as in Homework 1. For example:
+
 
         Map msd;  // KeyType is std::string, ValueType is double
         msd.insert("ccc", 80);
@@ -51,9 +40,6 @@ Notice that there is now no a priori limit on the maximum number of key/value pa
         assert(!msd.get(4, k, v)  &&  k == "xxx");  // x is unchanged
         assert(msd.get(1, k, v)  &&  k == "bbb");   // "bbb" is greater than
                                                     // exactly 1 item
-This is the same visible behavior as in Homework 1.
-
-Another requirement is that as in Problem 5 of Homework 1, the number of statement executions when swapping two maps must be the same no matter how many key/value pairs are in the maps.
 
 Implement some map algorithms
 Implement the following two functions. Notice that they are non-member functions: They are not members of Map or any other class, so they must not access private members of Map.
@@ -265,28 +251,3 @@ the linking must succeed. When the resulting executable is run, it must write Pa
 During execution, if a client performs actions whose behavior is defined by this spec, your program must not perform any undefined actions, such as dereferencing a null or uninitialized pointer.
 
 Your code in Map.h and Map.cpp must not read anything from cin and must not write anything whatsoever to cout. If you want to print things out for debugging purposes, write to cerr instead of cout. cerr is the standard error destination; items written to it by default go to the screen. When we test your program, we will cause everything written to cerr to be discarded instead — we will never see that output, so you may leave those debugging output statements in your program if you wish.
-
-Turn it in
-By Monday, January 24, there will be a link on the class webpage that will enable you to turn in your source files and report. You will turn in a zip file containing these three files:
-
-Map.h. When you turn in this file, the using statements must specify std::string as the KeyType and double as the ValueType.
-
-Map.cpp. Function implementations should be appropriately commented to guide a reader of the code.
-
-report.docx or report.doc (in Microsoft Word format) or report.txt (an ordinary text file) that contains:
-
-a description of the design of your doubly-linked list implementation. (A couple of sentences will probably suffice, perhaps with a picture of a typical Map and an empty Map. Is the list circular? Does it have a dummy node? What's in your list nodes? Are they in any particular order?)
-
-pseudocode for non-trivial algorithms (e.g., Map::erase and reassign).
-
-a list of test cases that would thoroughly test the functions. Be sure to indicate the purpose of the tests. For example, here's the beginning of a presentation in the form of code:
-
-The tests were performed on a map from strings to doubles
-
-  // default constructor
-Map m;
-  // For an empty map:
-assert(m.size() == 0);      // test size
-assert(m.empty());          // test empty
-assert(!m.erase("Ricky"));  // nothing to erase 
-Even if you do not correctly implement all the functions, you must still list test cases that would test them. Don't lose points by thinking "Well, I didn't implement this function, so I won't bother saying how I would have tested it if I had implemented it."
