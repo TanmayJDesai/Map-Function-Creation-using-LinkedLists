@@ -1,5 +1,7 @@
-## Creating a Map using linked lists
+## Map Function Creation  
+Creating a Map using linked lists
 
+```
 using KeyType = TheTypeOfTheKeysGoesHere;
 using ValueType = TheTypeOfTheValuesGoesHere;
 
@@ -18,6 +20,7 @@ class Map
     bool get(int i, KeyType& key, ValueType& value) const;
     void swap(Map& other);
 };
+```
 For this project, implement this Map interface using a doubly-linked list. (You must not use the list class template from the C++ library.)
 
 For this linked list implementation, if you let the compiler write the destructor, copy constructor, and assignment operator, they will do the wrong thing, so you will have to declare and implement these public member functions as well:
