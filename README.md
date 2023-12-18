@@ -1,6 +1,4 @@
-Score 98/100
-
-Creating a Map using linked lists
+## Creating a Map using linked lists
 
 using KeyType = TheTypeOfTheKeysGoesHere;
 using ValueType = TheTypeOfTheValuesGoesHere;
